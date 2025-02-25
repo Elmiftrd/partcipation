@@ -1,0 +1,33 @@
+1. tanggal pertama pemesanan dan tanggal terakhir pemesanan masing masing pembeli di masing masing toko
+select shopid,buyerid, min(order_time) as tanggal_pemesanan_pertama,max(order_time) as tanggal_pemesanan_terakhir
+from order_tab
+group by shopid,buyerid
+order by shopid,buyerid
+
+2. pembeli pertama yang melakukan pemesanan di setiap toko
+with shop_first_order as (
+    select 
+    shopid,
+    min(orderid) as min_order_id
+    from order_tab
+    group by 1
+    order by 1
+)
+select 
+order_tab.shopid,
+buyerid
+from shop_first_order sfo
+left join order_tab on order_tab.shopid=sfo.shopid and order_tab.orderid=sfo.min_order_id
+order by 1;
+
+
+3. 10 pembeli dengan gmv terbanyak di indonesia dan singapur
+select 
+user_tab.buyerid,
+sum(order_tab.gmv) as sum_gmv
+from order_tab
+left join user_tab on order_tab.buyerid=user_tab.buyerid
+where user_tab.country in('ID','SG')
+group by 1
+order by 2 DESC
+limit 10
