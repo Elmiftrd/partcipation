@@ -78,4 +78,12 @@ left join user_tab on order_tab.buyerid=user_tab.buyerid
 group by 1,2
 order by 1,2
 
-
+5. order/views dan click/impressions di setiap toko
+select 
+performance_tab.shopid,
+COUNT(DISTINCT order_tab.orderid)/sum(performance_tab.Item_views) as 'order_per_views',
+sum(performance_tab.total_clicks)/sum(performance_tab.impressions) as 'clicks_per_impressions'
+from performance_tab
+left join order_tab on performance_tab.shopid=order_tab.shopid
+group by 1
+order by 1
