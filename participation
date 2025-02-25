@@ -1,0 +1,28 @@
+mencari 3 tahun berturut turut 
+
+select distinct from a.name participation_1 a
+join participation_1 b
+on b.name=a.name and b.year=a.year+1
+join participation_1 c
+on c.name=a.name and c.year=a.year-1
+order by a.name 
+
+cara lain
+select distinct a.name from participation_1 a
+join participation_1 b
+on b.name=a.name and b.year=a.year+1
+join participation_1 c
+on c.name=a.name and c.year=a.year+2
+order by a.name 
+
+untuk mencari 5 tahun berturut turut 
+select distinct a.name from participation_4 a
+join participation_4 b
+on b.name=a.name and b.year=a.year+1
+join participation_4 c
+on c.name=a.name and c.year=a.year+2
+join participation_4 d
+on d.name=a.name and d.year=a.year+3
+join participation_4 e
+on e.name=a.name and e.year=a.year+4
+order by a.name;
