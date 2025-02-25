@@ -31,3 +31,51 @@ where user_tab.country in('ID','SG')
 group by 1
 order by 2 DESC
 limit 10
+
+
+10 pembeli dengan gmv terbanyak masing masing di indonesia dan singapur
+WITH buyer_sg AS (
+    SELECT 
+        user_tab.country,
+        user_tab.buyerid,
+        SUM(order_tab.gmv) AS sum_gmv 
+    FROM order_tab
+    LEFT JOIN user_tab 
+        ON order_tab.buyerid = user_tab.buyerid
+    WHERE user_tab.country = 'SG' 
+    GROUP BY 1, 2
+    ORDER BY 3 DESC 
+    LIMIT 10
+),
+buyer_id AS (
+    SELECT 
+        user_tab.country,
+        user_tab.buyerid,
+        SUM(order_tab.gmv) AS sum_gmv 
+    FROM order_tab
+    LEFT JOIN user_tab 
+        ON order_tab.buyerid = user_tab.buyerid
+    WHERE user_tab.country = 'ID' 
+    GROUP BY 1, 2
+    ORDER BY 3 DESC 
+    LIMIT 10
+)
+-- Gabungkan hasil dari kedua CTE
+SELECT * FROM buyer_sg
+UNION ALL
+SELECT * FROM buyer_id;
+
+4. banyaknya pembeli dari masing masing negara yang membeli dengan itemid ganjil dan genap
+select 
+user_tab.country,
+case 
+when mod(order_tab.itemid,2)=0 then 'even'
+else'odd'
+end as itemid_number,
+count(DISTINCT order_tab.buyerid) as buyer_count
+from order_tab
+left join user_tab on order_tab.buyerid=user_tab.buyerid
+group by 1,2
+order by 1,2
+
+
